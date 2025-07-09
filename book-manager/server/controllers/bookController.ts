@@ -10,7 +10,7 @@ export const getAll = async (req: Request, res: Response) => {
 
 // GET BY ID
 export const getOne = async (req: Request, res: Response) => {
-  const book = await bookService.getBook(Number(req.params.id))
+  const book = await bookService.getBooks(req.params.id)
   book ? res.json(book) : res.status(404).send('Not found')
 }
 
