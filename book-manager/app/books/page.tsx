@@ -3,9 +3,7 @@
 import { AppProvider, type Navigation } from '@toolpad/core/AppProvider'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 import { DashboardLayout } from '@toolpad/core/DashboardLayout'
-import { bookColumns } from './bookColumns'
-import { DataGrid } from '@mui/x-data-grid'
-import { Box, Typography, createTheme } from '@mui/material'
+import { Box, Typography, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material'
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks'
 
 const navigation: Navigation = [
@@ -17,8 +15,24 @@ const navigation: Navigation = [
 ]
 
 const rows = [
-  { id: 1, title: 'Atomic Habits', author: 'James Clear' },
-  { id: 2, title: 'Deep Work', author: 'Cal Newport' },
+  {
+    id: 1,
+    title: 'Atomic Habits',
+    author: 'James Clear',
+    category: 'Self-help',
+    description: 'Tiny Changes, Remarkable Results',
+    createdAt: new Date('2023-01-01'),
+    updatedAt: new Date('2023-05-01'),
+  },
+  {
+    id: 2,
+    title: 'Deep Work',
+    author: 'Cal Newport',
+    category: 'Productivity',
+    description: 'Rules for Focused Success in a Distracted World',
+    createdAt: new Date('2023-02-10'),
+    updatedAt: new Date('2023-06-15'),
+  },
 ]
 
 export default function BooksPage() {
@@ -30,8 +44,39 @@ export default function BooksPage() {
       >
         <DashboardLayout>
           <Box sx={{ p: 4 }}>
-            <Typography variant="h5" gutterBottom>รายการหนังสือ</Typography>
-            <DataGrid rows={rows} columns={bookColumns} autoHeight />
+            <div className='flex justify-between'>
+              <Typography variant="h5" gutterBottom>รายการหนังสือ</Typography>
+              <input type="text" placeholder='ค้นหารายชื่อหนังสือ' />
+            </div>
+            <div>
+              <Button href="/books/add" variant="contained" sx={{ mb: 2 }}>
+                เพิ่มหนังสือ
+              </Button>
+            </div>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Title</TableCell>
+                  <TableCell>Author</TableCell>
+                  <TableCell>Category</TableCell>
+                  <TableCell>Description</TableCell>
+                  <TableCell>Created At</TableCell>
+                  <TableCell>Updated At</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell>{row.title}</TableCell>
+                    <TableCell>{row.author}</TableCell>
+                    <TableCell>{row.category}</TableCell>
+                    <TableCell>{row.description ?? '-'}</TableCell>
+                    <TableCell>{row.createdAt.toLocaleDateString()}</TableCell>
+                    <TableCell>{row.updatedAt.toLocaleDateString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </Box>
         </DashboardLayout>
       </AppProvider>

@@ -1,7 +1,18 @@
 import prisma from "../models/prismaClient";
 
 // ------------- GET ---------------//
-export const getBooks = () => prisma.book.findMany()
+export const getBooks = async (search?: string) => {
+  const whereClause = search
+    ? {
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } }, 
+          { author: { contains: search, mode: 'insensitive' } },
+        ],
+      }
+    : {}
+
+  return prisma.book.findMany({ where: whereClause })
+}
 
 // ------------- GET By ID ---------------//
 export const getBook = (id: number) => prisma.book.findUnique({ where: { id } })
